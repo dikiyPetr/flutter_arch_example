@@ -11,7 +11,7 @@ class FavoritesTab extends StatefulWidget {
 }
 
 class _FavoritesTabState extends State<FavoritesTab> {
-  final _feedWorker = Dependencies.instance.feedWorker;
+  final _feedWorker = Locator.feedWorker;
   late final _feedItemsFuture = _feedWorker.getFavorites();
 
   @override

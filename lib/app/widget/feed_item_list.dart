@@ -20,7 +20,7 @@ class FeedItemList extends StatefulWidget {
 }
 
 class _FeedItemListState extends State<FeedItemList> {
-  final _feedWorker = Dependencies.instance.feedWorker;
+  final _feedWorker = Locator.feedWorker;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _FeedItemListState extends State<FeedItemList> {
     if (isFavorite) {
       _feedWorker.removeFromFavorites(item);
       widget.map[item] = false;
-      _showSnack('Удалено из избраного');
+      _showSnack('Удалено из избранного');
     } else {
       _feedWorker.addToFavorites(item);
       widget.map[item] = true;

@@ -1,20 +1,37 @@
+import 'package:data/data.dart';
 import 'package:data_inteface_impl/data_inteface_impl.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 
-class Dependencies {
-  final FeedWorker feedWorker;
-  static late final Dependencies instance;
+class Locator {
+  static final _getIt = GetIt.instance;
 
-  Dependencies._(this.feedWorker);
+  static FeedWorker get feedWorker => _getIt.get();
 
-  static Future<Dependencies> build() async {
-    final apiKey = await rootBundle.loadString('assets/apiKey.txt');
-    final dio = DioBuilder.build(apiKey);
-    final hiveBuilder = await HiveBuilder.build();
-    final feedDao = FeedDaoImpl(hiveBuilder.feedBox);
-    final feedApi = FeedApiImpl(dio);
-    final feedWorker = FeedWorker(feedDao, feedApi);
-    return instance = Dependencies._(feedWorker);
+  Locator._();
+
+  static Future<void> build() {
+    _getIt.registerSingletonAsync(() async =>
+        SecureParams(await rootBundle.loadString('assets/apiKey.txt')));
+    _getIt.registerSingletonAsync(() => HiveBuilder.build());
+
+    _getIt.registerLazySingleton(
+        () => DioBuilder.build(_getIt.get<SecureParams>().apiKey));
+    _getIt.registerLazySingleton<FeedApi>(() => FeedApiImpl(_getIt.get()));
+
+    _getIt.registerLazySingleton<FeedDao>(
+        () => FeedDaoImpl(_getIt.get<HiveBuilder>().feedBox));
+    _getIt.registerLazySingleton(() => FeedWorker(
+          _getIt.get(),
+          _getIt.get(),
+        ));
+    return _getIt.allReady();
   }
+}
+
+class SecureParams {
+  final String apiKey;
+
+  SecureParams(this.apiKey);
 }

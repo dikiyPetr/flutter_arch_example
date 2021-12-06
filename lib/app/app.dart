@@ -11,7 +11,7 @@ class NasaFeedApp extends StatefulWidget {
 }
 
 class _NasaFeedAppState extends State<NasaFeedApp> {
-  late final _buildFuture = Dependencies.build();
+  late final _buildFuture = Locator.build();
 
   @override
   Widget build(BuildContext context) {

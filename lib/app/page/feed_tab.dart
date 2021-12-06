@@ -12,7 +12,7 @@ class FeedTab extends StatefulWidget {
 }
 
 class _FeedTabState extends State<FeedTab> {
-  final _feedWorker = Dependencies.instance.feedWorker;
+  final _feedWorker = Locator.feedWorker;
   late Future<Map<FeedItem, bool>> _feedItemsFuture = _feedWorker.getLatest();
 
   @override
