@@ -1,36 +1,24 @@
-import 'package:data/data.dart';
 import 'package:flutter/material.dart';
-import 'package:nasa_feed/app/di/locator.dart';
+import 'package:nasa_feed/app/simple_state_management/main_page_state_manager.dart';
 import 'package:nasa_feed/app/widget/feed_item_list.dart';
+import 'package:provider/provider.dart';
 
-class FavoritesTab extends StatefulWidget {
+class FavoritesTab extends StatelessWidget {
   const FavoritesTab({Key? key}) : super(key: key);
 
   @override
-  State<FavoritesTab> createState() => _FavoritesTabState();
-}
-
-class _FavoritesTabState extends State<FavoritesTab> {
-  final _feedWorker = Locator.feedWorker;
-  late final _feedItemsFuture = _feedWorker.getFavorites();
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<FeedItem>>(
-      future: _feedItemsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final items = snapshot.requireData;
-          final map = Map.fromEntries(items.map((e) => MapEntry(e, true)));
-          return FeedItemList(map: map);
-        } else if (snapshot.hasError) {
-          return const Center(
-            child: Icon(Icons.error),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
+    final mainPageState = context.watch<MainPageStateManager>().value;
+    if (mainPageState.hasError) {
+      return const Center(child: Icon(Icons.error));
+    } else if (mainPageState.isProgress) {
+      return const Center(child: CircularProgressIndicator());
+    } else {
+      final items = mainPageState.items;
+      final map =
+          Map.fromEntries(items.entries.where((element) => element.value));
+
+      return FeedItemList(map: map);
+    }
   }
 }

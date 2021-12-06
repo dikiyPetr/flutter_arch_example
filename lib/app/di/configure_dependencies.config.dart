@@ -11,7 +11,8 @@ import 'package:domain/domain.dart' as _i7;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'app_module.dart' as _i8;
+import '../simple_state_management/main_page_state_manager.dart' as _i8;
+import 'app_module.dart' as _i9;
 import 'secure_params.dart' as _i4; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
@@ -30,7 +31,9 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => appModule.feedDao(get<_i3.HiveBuilder>()));
   gh.lazySingleton<_i7.FeedWorker>(
       () => appModule.feedWorker(get<_i6.FeedApi>(), get<_i6.FeedDao>()));
+  gh.factory<_i8.MainPageStateManager>(
+      () => appModule.mainPageStateManager(get<_i7.FeedWorker>()));
   return get;
 }
 
-class _$AppModule extends _i8.AppModule {}
+class _$AppModule extends _i9.AppModule {}

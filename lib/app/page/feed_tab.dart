@@ -1,41 +1,23 @@
-import 'package:data/data.dart';
 import 'package:flutter/material.dart';
-import 'package:nasa_feed/app/di/locator.dart';
+import 'package:nasa_feed/app/simple_state_management/main_page_state_manager.dart';
 import 'package:nasa_feed/app/widget/feed_item_list.dart';
+import 'package:provider/provider.dart';
 
-class FeedTab extends StatefulWidget {
+class FeedTab extends StatelessWidget {
   const FeedTab({Key? key}) : super(key: key);
 
   @override
-  State<FeedTab> createState() => _FeedTabState();
-}
-
-class _FeedTabState extends State<FeedTab> {
-  final _feedWorker = Locator.feedWorker;
-  late Future<Map<FeedItem, bool>> _feedItemsFuture = _feedWorker.getLatest();
-
-  @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        _feedItemsFuture = _feedWorker.getLatest();
-        setState(() {});
-      },
-      child: FutureBuilder<Map<FeedItem, bool>>(
-        future: _feedItemsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final map = snapshot.requireData;
-            return FeedItemList(map: map);
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Icon(Icons.error),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
+    final mainPageState = context.watch<MainPageStateManager>().value;
+    if (mainPageState.hasError) {
+      return const Center(child: Icon(Icons.error));
+    } else if (mainPageState.isProgress) {
+      return const Center(child: CircularProgressIndicator());
+    } else {
+      return RefreshIndicator(
+        onRefresh: () => context.read<MainPageStateManager>().refresh(),
+        child: FeedItemList(map: mainPageState.items),
+      );
+    }
   }
 }

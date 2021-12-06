@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nasa_feed/app/di/locator.dart';
 import 'package:nasa_feed/app/page/favorites_tab.dart';
+import 'package:nasa_feed/app/simple_state_management/main_page_state_manager.dart';
+import 'package:provider/provider.dart';
 
 import 'feed_tab.dart';
 
@@ -13,23 +16,27 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Near Earth Object"),
-          bottom: const TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.info)),
-              Tab(icon: Icon(Icons.favorite))
+    return ListenableProvider<MainPageStateManager>(
+      create: (context) => ServiceLocator.mainPageStateManager,
+      dispose: (context, instance) => instance.dispose(),
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Near Earth Object"),
+            bottom: const TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.info)),
+                Tab(icon: Icon(Icons.favorite))
+              ],
+            ),
+          ),
+          body: const TabBarView(
+            children: [
+              FeedTab(),
+              FavoritesTab(),
             ],
           ),
-        ),
-        body: const TabBarView(
-          children: [
-            FeedTab(),
-            FavoritesTab(),
-          ],
         ),
       ),
     );
