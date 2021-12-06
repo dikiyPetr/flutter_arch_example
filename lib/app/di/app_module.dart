@@ -3,6 +3,7 @@ import 'package:data_inteface_impl/data_inteface_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nasa_feed/app/bloc/main_page/bloc.dart';
 import 'package:nasa_feed/app/di/secure_params.dart';
 
 @module
@@ -27,4 +28,7 @@ abstract class AppModule {
   @lazySingleton
   FeedWorker feedWorker(FeedApi feedApi, FeedDao feedDao) =>
       FeedWorker(feedDao, feedApi);
+
+  @injectable
+  MainPageBloc mainPageBloc(FeedWorker feedWorker) => MainPageBloc(feedWorker);
 }
