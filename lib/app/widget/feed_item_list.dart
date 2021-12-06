@@ -1,9 +1,8 @@
 import 'package:data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nasa_feed/app/di/locator.dart';
 import 'package:nasa_feed/app/widget/feed_item_widget.dart';
-
-import '../../di.dart';
 
 class FeedItemList extends StatefulWidget {
   final Map<FeedItem, bool> map;

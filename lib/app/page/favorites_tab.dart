@@ -1,7 +1,7 @@
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:nasa_feed/app/di/locator.dart';
 import 'package:nasa_feed/app/widget/feed_item_list.dart';
-import 'package:nasa_feed/di.dart';
 
 class FavoritesTab extends StatefulWidget {
   const FavoritesTab({Key? key}) : super(key: key);

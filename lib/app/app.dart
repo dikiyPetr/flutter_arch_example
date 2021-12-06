@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nasa_feed/app/page/main_page.dart';
 
-import '../di.dart';
+import 'di/configure_dependencies.dart';
 
 class NasaFeedApp extends StatefulWidget {
   const NasaFeedApp({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class NasaFeedApp extends StatefulWidget {
 }
 
 class _NasaFeedAppState extends State<NasaFeedApp> {
-  late final _buildFuture = Locator.build();
+  late final _buildFuture = configureDependencies();
 
   @override
   Widget build(BuildContext context) {
