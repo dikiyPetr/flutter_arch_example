@@ -18,7 +18,9 @@ class _FeedTabState extends State<FeedTab> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        _feedItemsFuture = _feedWorker.getLatest();
+        final feedItemsFuture = _feedWorker.getLatest();
+        await feedItemsFuture;
+        _feedItemsFuture = feedItemsFuture;
         setState(() {});
       },
       child: FutureBuilder<Map<FeedItem, bool>>(

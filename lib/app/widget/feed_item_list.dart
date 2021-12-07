@@ -44,16 +44,10 @@ class _FeedItemListState extends State<FeedItemList> {
     if (isFavorite) {
       _feedWorker.removeFromFavorites(item);
       widget.map[item] = false;
-      _showSnack('Удалено из избранного');
     } else {
       _feedWorker.addToFavorites(item);
       widget.map[item] = true;
-      _showSnack('Добавлено в избранные');
     }
     setState(() {});
   }
-
-  void _showSnack(String text) => ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(text)));
 }
