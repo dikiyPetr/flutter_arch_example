@@ -10,8 +10,10 @@ import 'package:dio/dio.dart' as _i5;
 import 'package:domain/domain.dart' as _i7;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
+import 'package:redux/redux.dart' as _i9;
 
-import 'app_module.dart' as _i9;
+import '../redux/store.dart' as _i10;
+import 'app_module.dart' as _i11;
 import 'secure_params.dart' as _i4;
 import 'worker_provider.dart' as _i8; // ignore_for_file: unnecessary_lambdas
 
@@ -33,7 +35,9 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => appModule.feedWorker(get<_i6.FeedApi>(), get<_i6.FeedDao>()));
   gh.lazySingleton<_i8.WorkerProvider>(
       () => appModule.workerProvider(get<_i7.FeedWorker>()));
+  gh.lazySingleton<_i9.Store<_i10.GlobalState>>(
+      () => appModule.store(get<_i8.WorkerProvider>()));
   return get;
 }
 
-class _$AppModule extends _i9.AppModule {}
+class _$AppModule extends _i11.AppModule {}
