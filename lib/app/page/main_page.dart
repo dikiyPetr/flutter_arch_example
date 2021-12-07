@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:nasa_feed/app/page/favorites_tab.dart';
+import 'package:nasa_feed/app/redux/main_page/thunk.dart';
+import 'package:nasa_feed/app/redux/store.dart';
 
 import 'feed_tab.dart';
 
@@ -11,6 +14,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    super.initState();
+    final storeProvider = StoreProvider.of<GlobalState>(context, listen: false);
+    storeProvider.dispatch(RefreshThunk());
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

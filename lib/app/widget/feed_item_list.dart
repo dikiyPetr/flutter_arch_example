@@ -1,10 +1,12 @@
 import 'package:data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nasa_feed/app/di/locator.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:nasa_feed/app/redux/main_page/thunk.dart';
+import 'package:nasa_feed/app/redux/store.dart';
 import 'package:nasa_feed/app/widget/feed_item_widget.dart';
 
-class FeedItemList extends StatefulWidget {
+class FeedItemList extends StatelessWidget {
   final Map<FeedItem, bool> map;
   final void Function(FeedItem item)? onTap;
 
@@ -15,45 +17,30 @@ class FeedItemList extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FeedItemList> createState() => _FeedItemListState();
-}
-
-class _FeedItemListState extends State<FeedItemList> {
-  final _feedWorker = Locator.feedWorker;
-
-  @override
   Widget build(BuildContext context) {
-    final items = widget.map.keys.toList();
+    final items = map.keys.toList();
     return ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, i) {
-          final item = items[i];
-          return InkWell(
-            onTap: () => _addToFavorite(item),
-            child: FeedItemWidget(
-                item: item, isFavorite: widget.map[item] == true),
-          );
-        });
-  }
+      itemCount: items.length,
+      itemBuilder: (context, i) {
+        final item = items[i];
+        final isFavorite = map[item] == true;
+        return InkWell(
+          onTap: () {
+            final storeProvider =
+                StoreProvider.of<GlobalState>(context, listen: false);
 
-  void _addToFavorite(FeedItem item) {
-    final isFavorite = widget.map[item];
-    if (isFavorite == null) {
-      return;
-    }
-    if (isFavorite) {
-      _feedWorker.removeFromFavorites(item);
-      widget.map[item] = false;
-      _showSnack('Удалено из избранного');
-    } else {
-      _feedWorker.addToFavorites(item);
-      widget.map[item] = true;
-      _showSnack('Добавлено в избранные');
-    }
-    setState(() {});
+            storeProvider.dispatch(
+              isFavorite
+                  ? RemoveFromFavoritesThunk(item)
+                  : AddToFavoriteThunk(item),
+            );
+          },
+          child: FeedItemWidget(
+            item: item,
+            isFavorite: isFavorite,
+          ),
+        );
+      },
+    );
   }
-
-  void _showSnack(String text) => ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(text)));
 }

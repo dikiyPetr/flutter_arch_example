@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:nasa_feed/app/page/main_page.dart';
+import 'package:nasa_feed/app/redux/store.dart';
 
 import 'di/configure_dependencies.dart';
 
@@ -19,7 +21,10 @@ class _NasaFeedAppState extends State<NasaFeedApp> {
       future: _buildFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const MaterialApp(home: MainPage());
+          return StoreProvider(
+            store: globalStore,
+            child: const MaterialApp(home: MainPage()),
+          );
         } else {
           return const Material();
         }

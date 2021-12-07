@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nasa_feed/app/di/secure_params.dart';
+import 'package:nasa_feed/app/di/worker_provider.dart';
 
 @module
 abstract class AppModule {
@@ -27,4 +28,8 @@ abstract class AppModule {
   @lazySingleton
   FeedWorker feedWorker(FeedApi feedApi, FeedDao feedDao) =>
       FeedWorker(feedDao, feedApi);
+
+  @lazySingleton
+  WorkerProvider workerProvider(FeedWorker feedWorker) =>
+      WorkerProvider(feedWorker);
 }
