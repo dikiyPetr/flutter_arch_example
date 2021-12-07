@@ -12,25 +12,34 @@ class MainPageStateManager extends ValueNotifier<MainPageState> {
   }
 
   Future<void> refresh() async {
-    value = MainPageState(items: value.items, isProgress: true);
+    value = value.copyWith(isProgress: true, hasError: false);
     try {
-      value = MainPageState(items: await _worker.getLatest());
+      final items = await _worker.getLatest();
+      final favoriteItems =
+          Map.fromEntries(items.entries.where((element) => element.value));
+      value = value.copyWith(items: items, favoriteItems: favoriteItems);
     } catch (e) {
-      value = MainPageState(items: value.items, hasError: false);
+      value = value.copyWith(hasError: true);
+    } finally {
+      value = value.copyWith(isProgress: false);
     }
   }
 
   void addToFavorite(FeedItem item) {
+    _worker.addToFavorites(item);
     final items = Map.of(value.items);
     items[item] = true;
-    value = MainPageState(items: items);
-    _worker.addToFavorites(item);
+    final favoriteItems = Map.of(value.favoriteItems);
+    favoriteItems[item] = true;
+    value = value.copyWith(items: items, favoriteItems: favoriteItems);
   }
 
   void removeFromFavorite(FeedItem item) {
+    _worker.removeFromFavorites(item);
     final items = Map.of(value.items);
     items[item] = false;
-    value = MainPageState(items: items);
-    _worker.removeFromFavorites(item);
+    final favoriteItems = Map.of(value.favoriteItems);
+    favoriteItems[item] = false;
+    value = value.copyWith(items: items, favoriteItems: favoriteItems);
   }
 }

@@ -14,11 +14,7 @@ class FavoritesTab extends StatelessWidget {
     } else if (mainPageState.isProgress) {
       return const Center(child: CircularProgressIndicator());
     } else {
-      final items = mainPageState.items;
-      final map =
-          Map.fromEntries(items.entries.where((element) => element.value));
-
-      return FeedItemList(map: map);
+      return FeedItemList(map: mainPageState.favoriteItems);
     }
   }
 }
