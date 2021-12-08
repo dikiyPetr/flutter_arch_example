@@ -11,7 +11,7 @@ final mainPageReducer = combineReducers<MainPageState>([
 
 MainPageState _setFeedItemsAction(
         MainPageState state, SetFeedItemsAction action) =>
-    state.copyWith(items: action.items);
+    state.copyWith(items: action.items, favoriteItems: action.favoriteItems);
 
 MainPageState _setIsProgressAction(
         MainPageState state, SetIsProgressAction action) =>
