@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nasa_feed/app/simple_state_management/main_page_state_manager.dart';
+import 'package:nasa_feed/app/simple_state_management/main_page_state.dart';
 import 'package:nasa_feed/app/widget/feed_item_list.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,7 @@ class FavoritesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mainPageState = context.watch<MainPageStateManager>().value;
+    final mainPageState = context.watch<MainPageState>();
     if (mainPageState.hasError) {
       return const Center(child: Icon(Icons.error));
     } else if (mainPageState.isProgress) {

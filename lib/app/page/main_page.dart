@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nasa_feed/app/di/locator.dart';
 import 'package:nasa_feed/app/page/favorites_tab.dart';
+import 'package:nasa_feed/app/simple_state_management/main_page_state.dart';
 import 'package:nasa_feed/app/simple_state_management/main_page_state_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +17,16 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return ListenableProvider<MainPageStateManager>(
-      create: (context) => ServiceLocator.mainPageStateManager,
-      dispose: (context, instance) => instance.dispose(),
+    return MultiProvider(
+      providers: [
+        ListenableProvider<MainPageStateManager>(
+          create: (context) => ServiceLocator.mainPageStateManager,
+          dispose: (context, instance) => instance.dispose(),
+        ),
+        ProxyProvider<MainPageStateManager, MainPageState>(
+          update: (context, value, previous) => value.value,
+        )
+      ],
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
