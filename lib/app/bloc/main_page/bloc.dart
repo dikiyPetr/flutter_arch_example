@@ -25,7 +25,10 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     if (currentState is MainPageStateLoaded) {
       final items = Map.of(currentState.items);
       items[item] = true;
-      emit(MainPageStateLoaded(items));
+      final favoriteItems = Map.of(currentState.favoriteItems);
+      favoriteItems[item] = true;
+
+      emit(MainPageStateLoaded(items, favoriteItems));
     }
   }
 
@@ -39,7 +42,9 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     if (currentState is MainPageStateLoaded) {
       final items = Map.of(currentState.items);
       items[item] = false;
-      emit(MainPageStateLoaded(items));
+      final favoriteItems = Map.of(currentState.favoriteItems);
+      favoriteItems[item] = true;
+      emit(MainPageStateLoaded(items, favoriteItems));
     }
   }
 
@@ -48,7 +53,9 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     Emitter<MainPageState> emit,
   ) async {
     final items = await _worker.getLatest();
+    final favoriteItems =
+        Map.fromEntries(items.entries.where((element) => element.value));
     event.completer?.complete();
-    emit(MainPageStateLoaded(items));
+    emit(MainPageStateLoaded(items, favoriteItems));
   }
 }

@@ -14,9 +14,10 @@ class MainPageStateError extends MainPageState {}
 
 class MainPageStateLoaded extends MainPageState {
   final Map<FeedItem, bool> items;
+  final Map<FeedItem, bool> favoriteItems;
 
-  MainPageStateLoaded(this.items);
+  MainPageStateLoaded(this.items, this.favoriteItems);
 
   @override
-  List<Object?> get props => [items];
+  List<Object?> get props => [items, favoriteItems];
 }
