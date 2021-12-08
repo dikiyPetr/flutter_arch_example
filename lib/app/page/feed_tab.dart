@@ -15,7 +15,8 @@ class FeedTab extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     } else {
       return RefreshIndicator(
-        onRefresh: () => context.read<MainPageStateManager>().refresh(),
+        onRefresh: () =>
+            context.read<MainPageStateManager>().refresh(withProgress: false),
         child: FeedItemList(map: mainPageState.items),
       );
     }

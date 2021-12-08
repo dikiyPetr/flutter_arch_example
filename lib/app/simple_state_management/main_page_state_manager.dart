@@ -11,8 +11,8 @@ class MainPageStateManager extends ValueNotifier<MainPageState> {
     refresh();
   }
 
-  Future<void> refresh() async {
-    value = value.copyWith(isProgress: true, hasError: false);
+  Future<void> refresh({bool withProgress = true}) async {
+    value = value.copyWith(isProgress: withProgress, hasError: false);
     try {
       final items = await _worker.getLatest();
       final favoriteItems =
