@@ -9,12 +9,19 @@ class Dependencies {
   Dependencies._(this.feedWorker);
 
   static Future<Dependencies> build() async {
-    final apiKey = await rootBundle.loadString('assets/apiKey.txt');
-    final dio = DioBuilder.build(apiKey);
+    final secureParams =
+        SecureParams(await rootBundle.loadString('assets/apiKey.txt'));
+    final dio = DioBuilder.build(secureParams.apiKey);
     final hiveBuilder = await HiveBuilder.build();
     final feedDao = FeedDaoImpl(hiveBuilder.feedBox);
     final feedApi = FeedApiImpl(dio);
     final feedWorker = FeedWorker(feedDao, feedApi);
     return instance = Dependencies._(feedWorker);
   }
+}
+
+class SecureParams {
+  final String apiKey;
+
+  SecureParams(this.apiKey);
 }
