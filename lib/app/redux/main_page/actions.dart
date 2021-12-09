@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:data/data.dart';
 
 class SetFeedItemsAction {
@@ -20,4 +22,24 @@ class SetHasErrorAction {
   final bool hasError;
 
   SetHasErrorAction(this.hasError);
+}
+
+abstract class MainPageAction {}
+
+class RefreshAction extends MainPageAction {
+  final Completer<void>? completer;
+
+  RefreshAction([this.completer]);
+}
+
+class AddToFavoriteAction extends MainPageAction {
+  final FeedItem item;
+
+  AddToFavoriteAction(this.item);
+}
+
+class RemoveFromFavoriteAction extends MainPageAction {
+  final FeedItem item;
+
+  RemoveFromFavoriteAction(this.item);
 }

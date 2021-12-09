@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:nasa_feed/app/page/favorites_tab.dart';
-import 'package:nasa_feed/app/redux/main_page/thunk.dart';
+import 'package:nasa_feed/app/redux/main_page/actions.dart';
 import 'package:nasa_feed/app/redux/store.dart';
 
 import 'feed_tab.dart';
@@ -18,7 +18,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     final storeProvider = StoreProvider.of<GlobalState>(context, listen: false);
-    storeProvider.dispatch(RefreshThunk());
+    storeProvider.dispatch(RefreshAction());
   }
 
   @override

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:nasa_feed/app/redux/main_page/actions.dart';
 import 'package:nasa_feed/app/redux/main_page/state.dart';
-import 'package:nasa_feed/app/redux/main_page/thunk.dart';
 import 'package:nasa_feed/app/redux/store.dart';
 import 'package:nasa_feed/app/widget/feed_item_list.dart';
 
@@ -26,7 +26,7 @@ class FeedTab extends StatelessWidget {
                 final storeProvider =
                     StoreProvider.of<GlobalState>(context, listen: false);
                 final completer = Completer();
-                storeProvider.dispatch(RefreshThunk(completer));
+                storeProvider.dispatch(RefreshAction(completer));
                 return completer.future;
               },
               child: FeedItemList(map: state.items));

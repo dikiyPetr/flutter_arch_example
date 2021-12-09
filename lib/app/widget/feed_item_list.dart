@@ -2,7 +2,7 @@ import 'package:data/data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:nasa_feed/app/redux/main_page/thunk.dart';
+import 'package:nasa_feed/app/redux/main_page/actions.dart';
 import 'package:nasa_feed/app/redux/store.dart';
 import 'package:nasa_feed/app/widget/feed_item_widget.dart';
 
@@ -31,8 +31,8 @@ class FeedItemList extends StatelessWidget {
 
             storeProvider.dispatch(
               isFavorite
-                  ? RemoveFromFavoritesThunk(item)
-                  : AddToFavoriteThunk(item),
+                  ? RemoveFromFavoriteAction(item)
+                  : AddToFavoriteAction(item),
             );
           },
           child: FeedItemWidget(

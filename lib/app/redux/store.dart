@@ -1,7 +1,8 @@
 import 'package:nasa_feed/app/di/worker_provider.dart';
 import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 
+import 'main_page/actions.dart';
+import 'main_page/middleware.dart';
 import 'main_page/reducer.dart';
 import 'main_page/state.dart';
 
@@ -12,7 +13,10 @@ class MyStoreBuilder {
       Store<GlobalState>(
         _globalReducer,
         initialState: GlobalState.initState,
-        middleware: [ExtraArgumentThunkMiddleware(workerProvider)],
+        middleware: [
+          TypedMiddleware<GlobalState, MainPageAction>(
+              MainPageMiddleware(workerProvider)),
+        ],
       );
 }
 
