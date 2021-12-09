@@ -15,7 +15,7 @@ class FeedTab extends StatelessWidget {
       child: BlocListener<MainPageBloc, MainPageState>(
         listener: (BuildContext context, state) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: const Text(":(")));
+              .showSnackBar(const SnackBar(content: Text(":(")));
         },
         child: BlocBuilder<MainPageBloc, MainPageState>(
           builder: (context, state) {
