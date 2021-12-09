@@ -14,21 +14,27 @@ class FeedTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        final completer = Completer<void>();
+        final completer = Completer();
         BlocProvider.of<MainPageBloc>(context)
             .add(MainPageEventRefresh(completer));
         return completer.future;
       },
-      child: BlocBuilder<MainPageBloc, MainPageState>(
-        builder: (context, state) {
-          if (state is MainPageStateLoaded) {
-            return FeedItemList(map: state.items);
-          } else if (state is MainPageStateProgress) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return const Center(child: Icon(Icons.error));
-          }
+      child: BlocListener<MainPageBloc, MainPageState>(
+        listener: (BuildContext context, state) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: const Text(":(")));
         },
+        child: BlocBuilder<MainPageBloc, MainPageState>(
+          builder: (context, state) {
+            if (state.isProgress) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.hasError) {
+              return const Center(child: Icon(Icons.error));
+            } else {
+              return FeedItemList(map: state.items);
+            }
+          },
+        ),
       ),
     );
   }
