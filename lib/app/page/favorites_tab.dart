@@ -11,12 +11,12 @@ class FavoritesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MainPageBloc, MainPageState>(
       builder: (context, state) {
-        if (state is MainPageStateLoaded) {
-          return FeedItemList(map: state.favoriteItems);
-        } else if (state is MainPageStateProgress) {
+        if (state.isProgress) {
           return const Center(child: CircularProgressIndicator());
-        } else {
+        } else if (state.hasError) {
           return const Center(child: Icon(Icons.error));
+        } else {
+          return FeedItemList(map: state.items);
         }
       },
     );
