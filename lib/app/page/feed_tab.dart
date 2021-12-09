@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_feed/app/bloc/main_page/bloc.dart';
-import 'package:nasa_feed/app/bloc/main_page/event.dart';
 import 'package:nasa_feed/app/bloc/main_page/state.dart';
 import 'package:nasa_feed/app/widget/feed_item_list.dart';
 
@@ -13,12 +10,7 @@ class FeedTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async {
-        final completer = Completer<void>();
-        BlocProvider.of<MainPageBloc>(context)
-            .add(MainPageEventRefresh(completer));
-        return completer.future;
-      },
+      onRefresh: () async => BlocProvider.of<MainPageBloc>(context).refresh(),
       child: BlocBuilder<MainPageBloc, MainPageState>(
         builder: (context, state) {
           if (state is MainPageStateLoaded) {

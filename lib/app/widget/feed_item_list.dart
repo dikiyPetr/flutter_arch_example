@@ -36,9 +36,9 @@ class FeedItemList extends StatelessWidget {
     }
     final bloc = BlocProvider.of<MainPageBloc>(context);
     if (isFavorite) {
-      bloc.add(MainPageEventRemoveFromFavorites(item));
+      bloc.removeFromFavorites(item);
     } else {
-      bloc.add(MainPageEventAddToFavorites(item));
+      bloc.addToFavorites(item);
     }
   }
 }
