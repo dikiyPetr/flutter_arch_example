@@ -15,13 +15,13 @@ class Locator {
     _getIt.registerSingletonAsync(() async =>
         SecureParams(await rootBundle.loadString('assets/apiKey.txt')));
     _getIt.registerSingletonAsync(() => HiveBuilder.build());
-
     _getIt.registerLazySingleton(
         () => DioBuilder.build(_getIt.get<SecureParams>().apiKey));
-    _getIt.registerLazySingleton<FeedApi>(() => FeedApiImpl(_getIt.get()));
 
+    _getIt.registerLazySingleton<FeedApi>(() => FeedApiImpl(_getIt.get()));
     _getIt.registerLazySingleton<FeedDao>(
         () => FeedDaoImpl(_getIt.get<HiveBuilder>().feedBox));
+
     _getIt.registerLazySingleton(() => FeedWorker(
           _getIt.get(),
           _getIt.get(),
