@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:data/data.dart';
 
-class SetFeedItemsAction {
+abstract class MainPageAction {}
+
+class SetFeedItemsAction extends MainPageAction {
   final Map<FeedItem, bool> items;
   final Map<FeedItem, bool> favoriteItems;
 
@@ -12,19 +14,17 @@ class SetFeedItemsAction {
   });
 }
 
-class SetIsProgressAction {
+class SetIsProgressAction extends MainPageAction {
   final bool isProgress;
 
   SetIsProgressAction(this.isProgress);
 }
 
-class SetHasErrorAction {
+class SetHasErrorAction extends MainPageAction {
   final bool hasError;
 
   SetHasErrorAction(this.hasError);
 }
-
-abstract class MainPageAction {}
 
 class RefreshAction extends MainPageAction {
   final Completer<void>? completer;
